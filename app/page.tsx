@@ -1,102 +1,225 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="bg-primary text-primary-foreground px-6 py-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <div className="text-2xl font-bold">LOOO</div>
+          <nav className="flex space-x-8">
+            <Link href="/" className="hover:text-accent transition-colors">
+              Home
+            </Link>
+            <a href="#" className="hover:text-accent transition-colors">
+              Beom Plasmem
+            </a>
+            <a href="#" className="hover:text-accent transition-colors">
+              LagovPrugster
+            </a>
+            <div className="flex space-x-4">
+              <Link
+                href="/auth/login"
+                className="hover:text-accent transition-colors"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="hover:text-accent transition-colors"
+              >
+                Sign Up
+              </Link>
+            </div>
+          </nav>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </header>
+
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-6">
+              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+                Catchy headline
+              </h1>
+              <p className="text-xl text-accent">
+                A biter tescription: goeshere.
+              </p>
+              <Link href="/auth/signup">
+                <Button
+                  size="lg"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90"
+                >
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+            <div className="flex justify-center">
+              <div className="w-[40rem] h-[40rem] rounded-lg flex items-center justify-center">
+                <Image
+                  src="/Events-bro.svg"
+                  alt="Events illustration"
+                  width={512}
+                  height={448}
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Features Section */}
+      <section className="py-20 bg-card">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-card-foreground text-center mb-16">
+            Platform Features
+          </h2>
+          <div className="grid md:grid-cols-4 gap-8">
+            {[1, 2, 3, 4].map((item) => (
+              <Card
+                key={item}
+                className="text-center hover:shadow-lg transition-shadow"
+              >
+                <CardHeader>
+                  <div className="w-16 h-16 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span className="text-primary-foreground font-bold text-xl">
+                      ★
+                    </span>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-card-foreground">
+                    Feature {item}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Event Types Section */}
+      <section className="py-20 bg-secondary">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-secondary-foreground text-center mb-16">
+            Event Types
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {["Weddings", "Corporate Events", "Birthday Parties"].map(
+              (eventType, index) => (
+                <Card
+                  key={index}
+                  className="text-center hover:shadow-lg transition-shadow"
+                >
+                  <CardHeader>
+                    <div className="w-20 h-20 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center">
+                      <span className="text-primary-foreground font-bold text-2xl">
+                        {eventType === "Weddings"
+                          ? "💒"
+                          : eventType === "Corporate Events"
+                          ? "🏢"
+                          : "🎉"}
+                      </span>
+                    </div>
+                    <CardTitle className="text-xl font-semibold text-card-foreground">
+                      {eventType}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">
+                      Professional planning services for your special{" "}
+                      {eventType.toLowerCase()}.
+                    </p>
+                  </CardContent>
+                </Card>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-card">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-bold text-card-foreground text-center mb-16">
+            Testimonials
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah Johnson",
+                role: "Bride",
+                content:
+                  "Amazing experience! Our wedding was perfect thanks to the incredible planning team.",
+              },
+              {
+                name: "Michael Chen",
+                role: "CEO",
+                content:
+                  "The corporate event exceeded all expectations. Professional and seamless execution.",
+              },
+              {
+                name: "Emily Rodriguez",
+                role: "Event Host",
+                content:
+                  "Found the perfect planner for my daughter's sweet 16. Everything was magical!",
+              },
+            ].map((testimonial, index) => (
+              <Card key={index}>
+                <CardContent className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4">
+                      <span className="text-primary-foreground font-bold">
+                        {testimonial.name.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-card-foreground">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-muted-foreground text-sm">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground italic">
+                    "{testimonial.content}"
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-primary text-primary-foreground py-8">
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="text-accent">© Zaplt Company</div>
+          <div className="flex space-x-6">
+            <a
+              href="#"
+              className="text-accent hover:text-primary-foreground transition-colors"
+            >
+              Projety Policy
+            </a>
+            <a
+              href="#"
+              className="text-accent hover:text-primary-foreground transition-colors"
+            >
+              Terms of Servics
+            </a>
+          </div>
+        </div>
       </footer>
     </div>
   );

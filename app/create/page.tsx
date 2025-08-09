@@ -77,12 +77,18 @@ const SignupPage = () => {
             <Link href="/" className="hover:text-accent transition-colors">
               Home
             </Link>
-            <a href="#" className="hover:text-accent transition-colors">
-              Beom Plasmem
-            </a>
-            <a href="#" className="hover:text-accent transition-colors">
-              LagovPrugster
-            </a>
+            <Link
+              href="/planners"
+              className="hover:text-accent transition-colors"
+            >
+              Event Planners
+            </Link>
+            <Link
+              href="/create"
+              className="hover:text-accent transition-colors"
+            >
+              Create Event
+            </Link>
           </nav>
         </div>
       </header>
@@ -250,7 +256,6 @@ const SignupPage = () => {
               </Button>
 
               {/* Sign In Link */}
-             
             </form>
           </CardContent>
         </Card>

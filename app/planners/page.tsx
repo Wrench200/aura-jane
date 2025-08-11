@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,94 +15,25 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { Star, Menu, X } from "lucide-react";
+import { eventPlannerApi, EventPlannerBackend } from "@/lib/api";
 
-interface EventPlanner {
-  id: string;
+// Frontend interface for display purposes
+interface EventPlannerDisplay {
+  id: number;
   name: string;
-  location: string;
-  eventType: string[];
-  priceRange: string;
-  rating: number;
-  avatar?: string;
+  bio: string;
+  number: string;
+  portfolioCount: number;
+  eventCount: number;
+  sessionCount: number;
+  rating: number; // We'll calculate this or use a default for now
+  location: string; // We'll derive this from other data or add to backend later
+  eventType: string[]; // We'll derive this from events or add to backend later
+  priceRange: string; // We'll add this logic later
 }
 
-// Sample data for demonstration
-const samplePlanners: EventPlanner[] = [
-  {
-    id: "1",
-    name: "Sarah",
-    location: "Douala",
-    eventType: ["Conference"],
-    priceRange: "$$",
-    rating: 5,
-  },
-  {
-    id: "2",
-    name: "Celia",
-    location: "Bamenda",
-    eventType: ["Wedding"],
-    priceRange: "$$$",
-    rating: 4,
-  },
-  {
-    id: "3",
-    name: "Mercy",
-    location: "Yaounde",
-    eventType: ["Party"],
-    priceRange: "$",
-    rating: 5,
-  },
-  {
-    id: "4",
-    name: "Brenda",
-    location: "Buea",
-    eventType: ["Conference", "Corporate"],
-    priceRange: "$$",
-    rating: 4,
-  },
-  {
-    id: "5",
-    name: "John",
-    location: "Douala",
-    eventType: ["Wedding", "Party"],
-    priceRange: "$$$",
-    rating: 5,
-  },
-  {
-    id: "6",
-    name: "Vera",
-    location: "Bertuoa",
-    eventType: ["Other"],
-    priceRange: "$$",
-    rating: 4,
-  },
-  {
-    id: "7",
-    name: "Planner Name",
-    location: "New Location",
-    eventType: ["Conference"],
-    priceRange: "$",
-    rating: 5,
-  },
-  {
-    id: "8",
-    name: "Planner Name",
-    location: "Lypad Location",
-    eventType: ["Wedding"],
-    priceRange: "$$$",
-    rating: 4,
-  },
-  {
-    id: "9",
-    name: "Planner Name",
-    location: "Wypsd/Lunotion",
-    eventType: ["Party", "Other"],
-    priceRange: "$$",
-    rating: 5,
-  },
-];
-
 const EventPlannersPage = () => {
+  // Filter states
   const [selectedEventTypes, setSelectedEventTypes] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>("");
   const [selectedLocation, setSelectedLocation] = useState<string>("");
@@ -110,6 +41,50 @@ const EventPlannersPage = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [priceRangeSlider, setPriceRangeSlider] = useState([0, 100]);
+  
+  // Data states
+  const [planners, setPlanners] = useState<EventPlannerDisplay[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Transform backend data to display format
+  const transformPlannerData = (backendPlanner: EventPlannerBackend): EventPlannerDisplay => {
+    return {
+      id: backendPlanner.id,
+      name: backendPlanner.name,
+      bio: backendPlanner.bio,
+      number: backendPlanner.number,
+      portfolioCount: backendPlanner.portfolios?.length || 0,
+      eventCount: backendPlanner.events?.length || 0,
+      sessionCount: backendPlanner.sessions?.length || 0,
+      rating: 4 + Math.random(), // Generate random rating between 4-5 for now
+      location: "Location TBD", // Default location until we add this to backend
+      eventType: ["Conference"], // Default event type until we derive from events
+      priceRange: "$$", // Default price range
+    };
+  };
+
+  // Fetch planners data from backend
+  useEffect(() => {
+    const fetchPlanners = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const backendPlanners = await eventPlannerApi.getAll();
+        const displayPlanners = backendPlanners.map(transformPlannerData);
+        setPlanners(displayPlanners);
+      } catch (err) {
+        setError('Failed to fetch event planners. Please try again later.');
+        console.error('Error fetching planners:', err);
+        // Fallback to empty array
+        setPlanners([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlanners();
+  }, []);
 
   const eventTypes = ["Conference", "Wedding", "Party", "Other"];
   const locations = [
@@ -130,7 +105,7 @@ const EventPlannersPage = () => {
     }
   };
 
-  const filteredPlanners = samplePlanners.filter((planner) => {
+  const filteredPlanners = planners.filter((planner) => {
     const matchesEventType =
       selectedEventTypes.length === 0 ||
       selectedEventTypes.some((type) => planner.eventType.includes(type));
@@ -141,7 +116,8 @@ const EventPlannersPage = () => {
     const matchesSearch =
       !searchQuery ||
       planner.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      planner.location.toLowerCase().includes(searchQuery.toLowerCase());
+      planner.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      planner.bio.toLowerCase().includes(searchQuery.toLowerCase());
 
     return (
       matchesEventType && matchesLocation && matchesRating && matchesSearch
@@ -337,7 +313,9 @@ const EventPlannersPage = () => {
                   <SelectValue placeholder="Event Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="All Event Types">All Event Types</SelectItem>
+                  <SelectItem value="All Event Types">
+                    All Event Types
+                  </SelectItem>
                   {eventTypes.map((type) => (
                     <SelectItem key={type} value={type}>
                       {type}
@@ -371,7 +349,9 @@ const EventPlannersPage = () => {
                   <SelectValue placeholder="Price Range" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="All Price Ranges">All Price Ranges</SelectItem>
+                  <SelectItem value="All Price Ranges">
+                    All Price Ranges
+                  </SelectItem>
                   <SelectItem value="$">$ (Budget)</SelectItem>
                   <SelectItem value="$$">$$ (Standard)</SelectItem>
                   <SelectItem value="$$$">$$$ (Premium)</SelectItem>
@@ -393,34 +373,70 @@ const EventPlannersPage = () => {
             </div>
           </div>
 
-          {/* Planners Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPlanners.map((planner) => (
-              <Card
-                key={planner.id}
-                className="hover:shadow-lg transition-shadow"
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-lg text-muted-foreground">Loading event planners...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !loading && (
+            <div className="text-center py-12">
+              <p className="text-lg text-red-600 mb-4">{error}</p>
+              <Button 
+                variant="outline" 
+                onClick={() => window.location.reload()}
               >
-                <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <div className="w-8 h-8 bg-gray-400 rounded-full"></div>
-                  </div>
-                  <CardTitle className="text-lg">{planner.name}</CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    {planner.location}
-                  </p>
-                  {renderStars(planner.rating)}
-                </CardHeader>
-                <CardContent className="text-center">
-                  <Button variant="outline" className="w-full">
-                    View Portfolio
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                Try Again
+              </Button>
+            </div>
+          )}
+
+          {/* Planners Grid */}
+          {!loading && !error && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredPlanners.map((planner) => (
+                <Card
+                  key={planner.id}
+                  className="hover:shadow-lg transition-shadow"
+                >
+                  <CardHeader className="text-center">
+                    <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                      <div className="w-8 h-8 bg-gray-400 rounded-full"></div>
+                    </div>
+                    <CardTitle className="text-lg">{planner.name}</CardTitle>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {planner.location}
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
+                      {planner.bio}
+                    </p>
+                    <div className="flex justify-center items-center gap-2 text-xs text-muted-foreground mb-2">
+                      <span>{planner.portfolioCount} portfolios</span>
+                      <span>•</span>
+                      <span>{planner.eventCount} events</span>
+                    </div>
+                    {renderStars(Math.round(planner.rating))}
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <div className="flex gap-2">
+                      <Button variant="outline" className="flex-1">
+                        View Portfolio
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        Contact
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
           {/* No Results Message */}
-          {filteredPlanners.length === 0 && (
+          {!loading && !error && filteredPlanners.length === 0 && planners.length > 0 && (
             <div className="text-center py-12">
               <p className="text-lg text-muted-foreground">
                 No event planners found matching your criteria.
@@ -438,6 +454,18 @@ const EventPlannersPage = () => {
               >
                 Clear Filters
               </Button>
+            </div>
+          )}
+
+          {/* No Data Message */}
+          {!loading && !error && planners.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">
+                No event planners available at the moment.
+              </p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Please check back later or contact support if this issue persists.
+              </p>
             </div>
           )}
         </div>

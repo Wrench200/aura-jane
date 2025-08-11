@@ -55,17 +55,23 @@ const LoginPage = () => {
       {/* Header */}
       <header className="bg-primary text-primary-foreground px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="text-2xl font-bold">LOOO</div>
+          <div className="text-2xl font-bold">LOGO</div>
           <nav className="flex space-x-8">
             <Link href="/" className="hover:text-accent transition-colors">
               Home
             </Link>
-            <a href="#" className="hover:text-accent transition-colors">
-              Beom Plasmem
-            </a>
-            <a href="#" className="hover:text-accent transition-colors">
-              LagovPrugster
-            </a>
+            <Link
+              href="/planners"
+              className="hover:text-accent transition-colors"
+            >
+              Event Planners
+            </Link>
+            <Link
+              href="/create"
+              className="hover:text-accent transition-colors"
+            >
+              Create Event
+            </Link>
           </nav>
         </div>
       </header>

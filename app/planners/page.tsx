@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import Link from "next/link";
 import { Star, Menu, X } from "lucide-react";
-import { eventPlannerApi, EventPlannerBackend } from "@/lib/api";
+
 
 // Frontend interface for display purposes
 interface EventPlannerDisplay {

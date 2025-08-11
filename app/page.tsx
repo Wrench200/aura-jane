@@ -9,7 +9,16 @@ export default function Home() {
       {/* Header */}
       <header className="bg-primary text-primary-foreground px-6 py-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="text-2xl font-bold">LOOO</div>
+          <div className="text-2xl font-bold">
+             <Image
+                  src="/logo.png"
+                  alt="Events illustration"
+                  width={70}
+                  height={70}
+                  className="object-cover"
+                  priority
+                />
+          </div>
           <nav className="flex space-x-8">
             <Link href="/" className="hover:text-accent transition-colors">
               Home
@@ -24,7 +33,7 @@ export default function Home() {
               href="/create"
               className="hover:text-accent transition-colors"
             >
-              Create Event
+              Customize
             </Link>
             <div className="flex space-x-4">
               <Link
@@ -32,12 +41,6 @@ export default function Home() {
                 className="hover:text-accent transition-colors"
               >
                 Sign In
-              </Link>
-              <Link
-                href="/auth/signup"
-                className="hover:text-accent transition-colors"
-              >
-                Sign Up
               </Link>
             </div>
           </nav>
@@ -49,11 +52,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                Catchy headline
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+              Your Event, Your Way.
               </h1>
               <p className="text-xl text-accent">
-                A biter tescription: goeshere.
+                We blend creativity, expertise, and technology to turn your vision into a flawless, unforgettable event.
               </p>
               <Link href="/auth/signup">
                 <Button

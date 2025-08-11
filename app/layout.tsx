@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LOOO - Event Planning Platform",
+  title: "Aura Creations",
   description:
     "Connect with professional event planners or find your next event opportunity. From weddings to corporate events, we make event planning seamless.",
 };
